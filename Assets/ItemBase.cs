@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class ItemBase : MonoBehaviour
 {
-    public Transform AllItems;
     public Item[] items;
     private void Start()
     {
-        items = new Item[AllItems.childCount];
+        items = new Item[transform.childCount];
         for (int i = 0; i < items.Length; i++)
         {
-            items[i] = AllItems.GetChild(i).GetComponent<Item>();
+            
+            items[i] = transform.GetChild(i).GetComponent<Item>();
+            items[i].ID = i;
         }
     }
 }

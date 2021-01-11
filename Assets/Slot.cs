@@ -59,49 +59,31 @@ public class Slot : MonoBehaviour
     {
         if (amount < i.maxAmount)
         {
-            amount++;
-            //Items.Add(i);
-            Items = i;
-            if (amount > 1) { }
-            else
+            if (Empty || !Empty && i.ID == Items.ID)
             {
-                print("Новый элемент");
-                i = Instantiate(i);
-                //stuff.GetChild(index) = Instantiate(i, stuff.transform);
-                /*Instantiate(i, stuff.GetChild(index).transform.position, Quaternion.identity, stuff);
-                DestroyImmediate(stuff.GetChild(index).gameObject);*/
-                i.transform.position = transform.position;
-                i.transform.SetParent(stuff);
-                i.attachedIndex = index;
+                amount++;
+                //Items.Add(i);
+                
+                if (amount > 1) { }
+                else
+                {
+                    print($"Новый элемент {i.ID}");
+                    i = Instantiate(i);
+
+                    //stuff.GetChild(index) = Instantiate(i, stuff.transform);
+                    /*Instantiate(i, stuff.GetChild(index).transform.position, Quaternion.identity, stuff);
+                    DestroyImmediate(stuff.GetChild(index).gameObject);*/
+                    i.transform.position = transform.position;
+                    i.transform.SetParent(stuff);
+                    i.attachedIndex = index;
+                    Items = i;
+                }
+                Empty = false;
+                Items.gameObject.SetActive(true);
+                return true;
             }
-            Empty = false;
-            Items.gameObject.SetActive(true);
-            return true;
         }
         return false;
-    }
-    public void MoveItem(Item i, int a)
-    {
-        if (amount + a < i.maxAmount)
-        {
-            amount+=a;
-            //Items.Add(i);
-            Items = i;
-            if (amount > 1) { }
-            else
-            {
-
-                print("Двигаю элемент");
-                //stuff.GetChild(index) = Instantiate(i, stuff.transform);
-                /*Instantiate(i, stuff.GetChild(index).transform.position, Quaternion.identity, stuff);
-                DestroyImmediate(stuff.GetChild(index).gameObject);*/
-                i.transform.position = transform.position;
-                //i.transform.SetParent(stuff);
-                i.attachedIndex = index;
-            }
-            Empty = false;
-            Items.gameObject.SetActive(true);
-        }
     }
     public void Swap(Slot slot1, Slot slot2)
     {
@@ -113,9 +95,35 @@ public class Slot : MonoBehaviour
         //slot1.index = index1;
         //slot2.index = index2;
 
+        //Vector3 item1pos = slot1.transform.position;    
+        //Vector3 item2pos = slot2.transform.position;
+
+        //print($"slot1 {slot1.Items.ID};{slot1.amount};{slot1.Empty};");
+        //print($"slot2 {slot2.Items.ID};{slot2.amount};{slot2.Empty};");
+
+
+        (slot1.Items.transform.position, slot2.Items.transform.position) = (slot2.transform.position, slot1.transform.position);
         (slot1.Items, slot2.Items) = (slot2.Items, slot1.Items);
         (slot1.amount, slot2.amount) = (slot2.amount, slot1.amount);
         (slot1.Empty, slot2.Empty) = (slot2.Empty, slot1.Empty);
+        (slot1.Items.attachedIndex, slot2.Items.attachedIndex) = (slot2.Items.attachedIndex, slot1.Items.attachedIndex);
+        
+        //(slot1.Items.transform.position, slot2.Items.transform.position) = (slot2.transform.position, slot1.transform.position);
+
+        //(slot1, slot2) = (slot2, slot1);
+        //slot1.Items.gameObject.SetActive(false);
+        //print($"slot1 {slot1.Items.ID};{slot1.amount};{slot1.Empty};");
+        //print($"slot2 {slot2.Items.ID};{slot2.amount};{slot2.Empty};");
+
+        //slot1.Items.transform.position = item2pos;
+        //slot2.Items.transform.position = item1pos;
+
+        //slot1.Items.transform.position = Vector3.zero;
+        //slot1.Items.gameObject.SetActive(false);
+        //slot2.Items.gameObject.SetActive(false);
+
+        print("Свайпнул");
+        //(slot1.Items.transform.position, slot2.Items.transform.position) = (slot2.Items.transform.position, slot1.Items.transform.position);
         //(slot1.Items.attachedIndex, slot2.Items.attachedIndex) = (slot2.Items.attachedIndex, slot1.Items.attachedIndex);
         //(slot1.Items.attachedIndex, slot2.Items.attachedIndex) = (slot2.Items.attachedIndex, slot1.Items.attachedIndex);
         //if (slot1.amount <= 0) slot1.Clear();

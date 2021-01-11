@@ -51,7 +51,7 @@ public class Inventroy : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            AddItem(itemBase.items[0]);
+            AddItem(itemBase.items[Random.Range(0, 2)]);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -62,12 +62,8 @@ public class Inventroy : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (AddItem(item, i)) return;
+            if (slots[i].AddItem(item)) return;
         }
-    }
-    bool AddItem(Item item, int index)
-    {
-        return slots[index].AddItem(item);
     }
     void DestroyItem(int index)
     {

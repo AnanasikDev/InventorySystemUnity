@@ -14,7 +14,8 @@ public class Slot : MonoBehaviour
     public Transform inv;
     Inventroy inventroy;
     public LimitationMode SlotLimitMode;
-    public int[] IDs; // Элементы, согласно SlotLimitMode, которые могут или не могут находиться в этом слоте
+    //public int[] IDs; // Элементы, согласно SlotLimitMode, которые могут или не могут находиться в этом слоте
+    public Item.ItemType[] TYPEs; // Типы элементов, которые, согласно SlotLimitMode, могут или не могут находиться в этом слоте
     public ContainerType Type;
     private void Start()
     {
@@ -33,11 +34,11 @@ public class Slot : MonoBehaviour
         if (SlotLimitMode == LimitationMode.None) return false;
         else if (SlotLimitMode == LimitationMode.OnlyChoosen)
         {
-            if (!IDs.Contains(i.ID)) return false;
+            if (!TYPEs.Contains(i.Type)) return false;
         }
         else if (SlotLimitMode == LimitationMode.AvoidChoosen)
         {
-            if (IDs.Contains(i.ID)) return false;
+            if (TYPEs.Contains(i.Type)) return false;
         }
 
         if (amount < i.maxAmount)
@@ -71,11 +72,11 @@ public class Slot : MonoBehaviour
         if (SlotLimitMode == LimitationMode.None) return;
         else if (SlotLimitMode == LimitationMode.OnlyChoosen)
         {
-            if (!IDs.Contains(slot2.Items.ID)) return;
+            if (!TYPEs.Contains(slot2.Items.Type)) return;
         }
         else if (SlotLimitMode == LimitationMode.AvoidChoosen)
         {
-            if (IDs.Contains(slot2.Items.ID)) return;
+            if (TYPEs.Contains(slot2.Items.Type)) return;
         }
 
         (slot1.Items.transform.position, slot2.Items.transform.position) = (slot2.transform.position, slot1.transform.position);
@@ -84,7 +85,6 @@ public class Slot : MonoBehaviour
         (slot1.Empty, slot2.Empty) = (slot2.Empty, slot1.Empty);
         (slot1.Items.attachedIndex, slot2.Items.attachedIndex) = (slot2.Items.attachedIndex, slot1.Items.attachedIndex);
 
-        print($"{slot1.Type} {slot2.Type}");
         if (slot1.Type != slot2.Type)
         {
             if (slot1.Type == ContainerType.Inventory) slot1.Items.transform.SetParent(stuff);
@@ -116,7 +116,7 @@ public class Slot : MonoBehaviour
         AvoidChoosen, // Доступны все элементы, кроме тех, что указаны в IDs
         None // Не может находиться ни один элемент. Нужен для блокировки дополнительных слотов и т.п.
     }
-    public enum ContainerType
+    public enum ContainerType // От этого зависит объект, от к которому привязан предмет в этом слоте
     {
         Hotbar,
         Inventory

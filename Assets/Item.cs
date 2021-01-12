@@ -16,6 +16,7 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     public Transform stuff;
     public Transform elems;
     public int ID = -1;
+    public ItemType Type;
     void Start()
     {
         inventroy = inv.GetComponent<Inventroy>();
@@ -62,11 +63,15 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
             if (nearest.SlotLimitMode == Slot.LimitationMode.None) { ReturnBack(); return; }
             else if (nearest.SlotLimitMode == Slot.LimitationMode.OnlyChoosen)
             {
-                if (!nearest.IDs.Contains(ID)) { ReturnBack(); return; }
+                if (!nearest.TYPEs.Contains(Type)) 
+                { 
+                    ReturnBack(); 
+                    return; 
+                }
             }
             else if (nearest.SlotLimitMode == Slot.LimitationMode.AvoidChoosen)
             {
-                if (nearest.IDs.Contains(ID)) { ReturnBack(); return; } //nearest.Items.ID
+                if (nearest.TYPEs.Contains(Type)) { ReturnBack(); return; } //nearest.Items.ID
             }
 
             if (self.Type != nearest.Type)
@@ -105,12 +110,10 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         }
         return null;
     }
-    public void Drop()
+    public enum ItemType
     {
-        Destroy(gameObject);
-    }
-    public void Change()
-    {
-        gameObject.SetActive(false);
+        Any,
+        Armor,
+        Other
     }
 }

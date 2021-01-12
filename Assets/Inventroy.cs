@@ -64,7 +64,7 @@ public class Inventroy : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            AddItem(itemBase.items[Random.Range(0, 2)]);
+            AddItem(itemBase.items[Random.Range(0, 3)]);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {

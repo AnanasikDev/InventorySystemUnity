@@ -66,6 +66,8 @@ public class Slot : MonoBehaviour
     }
     public void Swap(Slot slot1, Slot slot2)
     {
+        if (!inventroy.opened) return;
+
         if (SlotLimitMode == LimitationMode.None) return;
         else if (SlotLimitMode == LimitationMode.OnlyChoosen)
         {

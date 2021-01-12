@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class hotbar : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class hotbar : MonoBehaviour
     int hotbarCapacity;
     public GameObject InvObj;
     Inventroy inventory;
+    public Image ActiveSlotHighLighter;
     void Start()
     {
         panel = transform.GetChild(0).gameObject;
@@ -23,6 +25,7 @@ public class hotbar : MonoBehaviour
             slots[i] = panel.transform.GetChild(i).GetComponent<Slot>();
         }
         inventory = InvObj.GetComponent<Inventroy>();
+        ActiveSlotHighLighter.transform.position = slots[0].transform.position;
     }
     void Update()
     {
@@ -46,10 +49,12 @@ public class hotbar : MonoBehaviour
     {
         foreach (Slot s in slots)
         {
-            if (!s.Empty) s.Items.gameObject.SetActive(false);
+            if (!s.Empty) s.Items.self.gameObject.SetActive(false);
+            //if (!s.Empty) s.Items.gameObject.SetActive(true);
         }
         activeItem = slots[activeIndex].gameObject;
-        activeItem.gameObject.SetActive(true);
-        inventory.ActiveSlotHighLighter.transform.position = slots[activeIndex].transform.position;
+        if (!slots[activeIndex].Empty)
+            slots[activeIndex].Items.self.gameObject.SetActive(true);
+        ActiveSlotHighLighter.transform.position = slots[activeIndex].transform.position;
     }
 }

@@ -9,12 +9,13 @@ public class Inventroy : MonoBehaviour
     public Transform AllSlots;
     public Transform HotbarSlots;
     public Slot[] slots;
-    bool opened = false;
+    [HideInInspector]
+    public bool opened = false;
     public GameObject ItemBase;
     ItemBase itemBase;
     Canvas canvas;
     public Transform stuff;
-    public Image ActiveSlotHighLighter; 
+    //public Image ActiveSlotHighLighter; 
     void Start()
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
@@ -41,7 +42,7 @@ public class Inventroy : MonoBehaviour
                 slot.AddItem(slot.Items);
             }
         }
-        ActiveSlotHighLighter.transform.position = slots[slots.Length - 1].transform.position;
+        //ActiveSlotHighLighter.transform.position = slots[slots.Length - 1].transform.position;
     }
     void Update()
     {

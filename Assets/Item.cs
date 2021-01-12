@@ -35,6 +35,7 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!inventroy.opened) return;
         attachedToCursor = true;
     }
 

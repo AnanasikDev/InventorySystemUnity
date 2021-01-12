@@ -8,12 +8,14 @@ public class Slot : MonoBehaviour
     public bool Empty = true;
     public Item Items;
     public int amount;
-    public Transform stuff;
+    public Transform stuff; // Inventory array of items
+    public Transform elems; // Hotbar array of items
     public int index;
     public Transform inv;
     Inventroy inventroy;
     public LimitationMode SlotLimitMode;
     public int[] IDs; // Элементы, согласно SlotLimitMode, которые могут или не могут находиться в этом слоте
+    public ContainerType Type;
     private void Start()
     {
         inventroy = inv.GetComponent<Inventroy>();
@@ -47,7 +49,10 @@ public class Slot : MonoBehaviour
                 {
                     i = Instantiate(i);
                     i.transform.position = transform.position;
-                    i.transform.SetParent(stuff);
+                    if (Type == ContainerType.Inventory)
+                        i.transform.SetParent(stuff);
+                    else if (Type == ContainerType.Hotbar)
+                        i.transform.SetParent(elems);
                     i.attachedIndex = index;
                     Items = i;
                 }
@@ -70,12 +75,23 @@ public class Slot : MonoBehaviour
         {
             if (IDs.Contains(slot2.Items.ID)) return;
         }
+
         (slot1.Items.transform.position, slot2.Items.transform.position) = (slot2.transform.position, slot1.transform.position);
         (slot1.Items, slot2.Items) = (slot2.Items, slot1.Items);
         (slot1.amount, slot2.amount) = (slot2.amount, slot1.amount);
         (slot1.Empty, slot2.Empty) = (slot2.Empty, slot1.Empty);
         (slot1.Items.attachedIndex, slot2.Items.attachedIndex) = (slot2.Items.attachedIndex, slot1.Items.attachedIndex);
-    }
+
+        print($"{slot1.Type} {slot2.Type}");
+        if (slot1.Type != slot2.Type)
+        {
+            if (slot1.Type == ContainerType.Inventory) slot1.Items.transform.SetParent(stuff);
+            if (slot1.Type == ContainerType.Hotbar) slot1.Items.transform.SetParent(elems);
+
+            if (slot2.Type == ContainerType.Inventory) slot2.Items.transform.SetParent(stuff);
+            if (slot2.Type == ContainerType.Hotbar) slot2.Items.transform.SetParent(elems);
+        }
+    }   
     public void Clear()
     {
         Items = null;
@@ -97,5 +113,10 @@ public class Slot : MonoBehaviour
         OnlyChoosen,  // Доступны все элементы, что указаны в IDs
         AvoidChoosen, // Доступны все элементы, кроме тех, что указаны в IDs
         None // Не может находиться ни один элемент. Нужен для блокировки дополнительных слотов и т.п.
+    }
+    public enum ContainerType
+    {
+        Hotbar,
+        Inventory
     }
 }

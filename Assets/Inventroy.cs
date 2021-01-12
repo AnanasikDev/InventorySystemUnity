@@ -1,26 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using System.Linq;
 public class Inventroy : MonoBehaviour
 {
     public GameObject InventoryPanel;
     public Transform AllSlots;
+    public Transform HotbarSlots;
     public Slot[] slots;
-    bool opened = true;
+    bool opened = false;
     public GameObject ItemBase;
     ItemBase itemBase;
     Canvas canvas;
-    public GameObject Empty;
     public Transform stuff;
+    public Image ActiveSlotHighLighter; 
     void Start()
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         itemBase = ItemBase.GetComponent<ItemBase>();
-        slots = new Slot[AllSlots.childCount-1];
-        for (int i = 0; i < slots.Length; i++)
+        slots = new Slot[AllSlots.childCount-1 + HotbarSlots.childCount-1];
+        int add = 0;
+        for (int i = 0; i < AllSlots.childCount - 1; i++)
         {
-            slots[i] = AllSlots.GetChild(i).GetComponent<Slot>();
+            slots[add] = AllSlots.GetChild(i).GetComponent<Slot>();
+            add++;
+        }
+        for (int i = 0; i < HotbarSlots.childCount-1; i++)
+        {
+            slots[add] = HotbarSlots.GetChild(i).GetComponent<Slot>();
+            add++;
         }
         int id = 0;
         foreach (Slot slot in slots)
@@ -32,6 +41,7 @@ public class Inventroy : MonoBehaviour
                 slot.AddItem(slot.Items);
             }
         }
+        ActiveSlotHighLighter.transform.position = slots[slots.Length - 1].transform.position;
     }
     void Update()
     {
@@ -41,11 +51,13 @@ public class Inventroy : MonoBehaviour
             if (opened)
             {
                 InventoryPanel.SetActive(true);
+                Time.timeScale = 0;
             }
 
             else if (!opened) 
             { 
-                InventoryPanel.SetActive(false); 
+                InventoryPanel.SetActive(false);
+                Time.timeScale = 1;
             }
             
         }

@@ -6,8 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
-    public GameObject self;
-    public Image icon;
+    public GameObject self; // Loot object / Object to use (weapon model etc.)
     public int maxAmount = 4;
     bool attachedToCursor = false;
     //[HideInInspector]
@@ -15,6 +14,7 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     public GameObject inv;
     Inventroy inventroy;
     public Transform stuff;
+    public Transform elems;
     public int ID = -1;
     void Start()
     {
@@ -40,7 +40,6 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
     void AttachNew()
     {
-        print("Отпустил");
         attachedToCursor = false;
         Slot nearest = inventroy.slots.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).FirstOrDefault();
         Slot self = GetSlot();
@@ -59,7 +58,6 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
                     return;
                 }
             }
-            print("Здесь пусто!");
             if (nearest.SlotLimitMode == Slot.LimitationMode.None) { ReturnBack(); return; }
             else if (nearest.SlotLimitMode == Slot.LimitationMode.OnlyChoosen)
             {
@@ -70,12 +68,19 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
                 if (nearest.IDs.Contains(ID)) { ReturnBack(); return; } //nearest.Items.ID
             }
 
+            if (self.Type != nearest.Type)
+            {
+                if (nearest.Type == Slot.ContainerType.Inventory) transform.SetParent(stuff);
+                if (nearest.Type == Slot.ContainerType.Hotbar) transform.SetParent(elems);
+            }
+
             nearest.amount = self.amount;
             nearest.Empty = false;
             nearest.Items = this;
             
             transform.position = nearest.transform.position;
             attachedIndex = nearest.index;
+
             self.Clear();
             return;
         }
@@ -98,5 +103,13 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
             }
         }
         return null;
+    }
+    public void Drop()
+    {
+        Destroy(gameObject);
+    }
+    public void Change()
+    {
+        gameObject.SetActive(false);
     }
 }

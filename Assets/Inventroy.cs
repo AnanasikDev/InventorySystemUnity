@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
+﻿using UnityEngine;
 public class Inventroy : MonoBehaviour
 {
     public GameObject InventoryPanel;
@@ -17,8 +13,9 @@ public class Inventroy : MonoBehaviour
     ItemBase itemBase;
     Canvas canvas;
     public Transform stuff;
+    public GameObject playerViz; // Player vizualization object
     //public Image ActiveSlotHighLighter;
-    public int add = 0;
+    int add = 0;
     void Start()
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
@@ -88,6 +85,7 @@ public class Inventroy : MonoBehaviour
     public void Open()
     {
         InventoryPanel.SetActive(true);
+        playerViz.SetActive(true);
         Time.timeScale = 0;
         foreach (Slot s in ArmorSlots)
             s.gameObject.SetActive(true);
@@ -95,24 +93,9 @@ public class Inventroy : MonoBehaviour
     public void Close()
     {
         InventoryPanel.SetActive(false);
+        playerViz.SetActive(false);
         Time.timeScale = 1;
         foreach (Slot s in ArmorSlots)
             s.gameObject.SetActive(false);
     }
-/*    public int GetFirstEmptySlot()
-    {
-        return AllSlots.childCount - 1 + HotbarSlots.childCount - 1 + ArmorSlots.Length - 1;
-    }*/
-    public class ContainerItem
-    {
-        public Item item;
-        public int amount;
-
-        public ContainerItem(Item item, int amount)
-        {
-            this.item = item;
-            this.amount = amount;
-        }
-    }
-
 }

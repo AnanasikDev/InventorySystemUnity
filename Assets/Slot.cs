@@ -57,7 +57,10 @@ public class Slot : MonoBehaviour
                     else if (Type == ContainerType.Hotbar)
                         i.transform.SetParent(elems);
                     i.attachedIndex = index;
+                    i.container = container;
+                    i.armor = armor;
                     Items = i;
+                    
                 }
                 Empty = false;
                 Items.gameObject.SetActive(true);

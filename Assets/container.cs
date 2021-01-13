@@ -1,69 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+
 public class container : MonoBehaviour
 {
-    // General script for managing ALL containers. Every container has another one script, that uses this one
-    public GameObject[] ExtraParts; // Some details that also should be shown or disabled by container
-    public GameObject[] ExceptParts;
-    GameObject containerPanel;
-    public GameObject ArmorStand;
-    bool opened = false;
-    public Inventroy.ContainerItem[] Items;
-    public Transform containerStuff; // The actual list of items in container
-    Transform[] containerStuffItems;
-    public GameObject InventoryObject;
-    Inventroy inv;
-    int capacity = 16;
-    public Transform AllSlots;
-    public Slot[] slots;
+    public Item[] items = new Item[16];
+    public int[] amounts = new int[16];
+    public bool opened = false;
+    public GameObject manager;
+    containerManager managerSc;
+    public int capacity = 16;
+    public Transform AllItemsObject;
+    Item[] AllItems;
+    public Transform Containerstuff;
     private void Start()
     {
-        containerPanel = transform.GetChild(0).gameObject;
-        slots = new Slot[capacity];
-        for (int i = 0; i < capacity; i++)
-        {
-            slots[i] = AllSlots.GetChild(i).GetComponent<Slot>();
-        }
+        //items = new Item[capacity];
+        //amounts = new int[capacity];
+        managerSc = manager.GetComponent<containerManager>();
+        /*Item apple = Instantiate(AllItemsObject.GetChild(0)).GetComponent<Item>();
+        apple.transform.SetParent(Containerstuff);
+        items[0] = apple;
+        amounts[0] = 1;*/
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             opened = !opened;
             if (opened) Open();
-            if (!opened) Close();
+            else Close();
         }
     }
     public void Open()
     {
-        containerPanel.SetActive(true);
-        foreach (GameObject obj in ExtraParts)
-        {
-            obj.SetActive(true);
-        }
-        foreach (GameObject obj in ExceptParts)
-        {
-            obj.SetActive(false);
-        }
-        ArmorStand.SetActive(false);
+        opened = true;
+        managerSc.Items = items;
+        managerSc.amounts = amounts;
+        managerSc.Fill();
+        managerSc.Open();
     }
     public void Close()
     {
-        containerPanel.SetActive(false);
-        foreach (GameObject obj in ExtraParts)
-        {
-            obj.SetActive(false);
-        }
-        foreach (GameObject obj in ExceptParts)
-        {
-            obj.SetActive(true);
-        }
-        ArmorStand.SetActive(true);
+        opened = false;
+        managerSc.Clear();
+        managerSc.Close();
     }
-    /*public void Clear()
-    {
-        containerStuffItems = new 
-    }*/
 }

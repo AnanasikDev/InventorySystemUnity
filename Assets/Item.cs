@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
-public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public GameObject self; // Loot object / Object to use (weapon model etc.)
     public Text amountText;
     public int maxAmount = 4;
-    bool attachedToCursor = false;
+    public bool attachedToCursor = false;
     //[HideInInspector]
     public int attachedIndex;
     public GameObject inv;
@@ -20,21 +18,32 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     public Transform armor; // Armor stand - array of armor
     public int ID = -1;
     public ItemType Type;
+    Camera cam;
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button == 0)
+        {
+            attachedToCursor = false;
+            if (inventroy.opened)
+                AttachNew();
+            else ReturnBack();
+        }
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == 0)
+        {
+            if (!inventroy.opened) return;
+            attachedToCursor = true;
+        }
+    }
     void Start()
     {
         inventroy = inv.GetComponent<Inventroy>();
+        cam = Camera.main;
     }
     private void Update()
     {
-        /*if (attachedToCursor && Input.GetMouseButtonUp(0))
-        {
-            print("up!");
-            attachedToCursor = false;
-*//*            if (inventroy.opened)
-                AttachNew();
-            else *//*
-            ReturnBack();
-        }*/
         if (attachedToCursor) 
         {
             transform.position = Input.mousePosition;
@@ -43,8 +52,6 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         print($"{attachedToCursor} {inventroy.opened}");
         if (attachedToCursor && !inventroy.opened)
         {
-            /*print("efijiejiv");
-            AttachNew();*/
             ReturnBack();
         }
     }
@@ -54,23 +61,12 @@ public class Item : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         attachedToCursor = false;
         ReturnBack();
     }
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        attachedToCursor = false;
-        if (inventroy.opened)
-            AttachNew();
-        else ReturnBack();
-    }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (!inventroy.opened) return;
-        attachedToCursor = true;
-    }
-
     void AttachNew()
-    {
+    {   
         attachedToCursor = false;
-        Slot nearest = inventroy.slots.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).Where(x => x.gameObject.activeSelf).FirstOrDefault();
+        Slot[] possible = inventroy.slots.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).Where(x => x.gameObject.activeSelf).ToArray();
+        Slot nearest = possible.FirstOrDefault();
+        print(string.Join<Slot>(",", possible));
         Slot self = GetSlot();
         if (nearest.index != attachedIndex) 
         {

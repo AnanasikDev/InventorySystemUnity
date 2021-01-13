@@ -10,6 +10,8 @@ public class Slot : MonoBehaviour
     public int amount;
     public Transform stuff; // Inventory array of items
     public Transform elems; // Hotbar array of items
+    public Transform container; // Container array of items
+    public Transform armor; // Armor stand - array of armor
     public int index;
     public Transform inv;
     Inventroy inventroy;
@@ -59,6 +61,8 @@ public class Slot : MonoBehaviour
                 }
                 Empty = false;
                 Items.gameObject.SetActive(true);
+                Items.amountText.text = amount.ToString();
+                Items.amountText.gameObject.SetActive(true);
                 return true;
             }
         } 
@@ -93,6 +97,26 @@ public class Slot : MonoBehaviour
             if (slot2.Type == ContainerType.Inventory) slot2.Items.transform.SetParent(stuff);
             if (slot2.Type == ContainerType.Hotbar) slot2.Items.transform.SetParent(elems);
         }
+        if (slot1.amount > 0)
+        {
+            slot1.Items.gameObject.SetActive(true);
+            slot1.Items.amountText.gameObject.SetActive(true);
+        }
+        else
+        {
+            slot1.Items.gameObject.SetActive(false);
+            slot1.Items.amountText.gameObject.SetActive(false);
+        }
+        if (slot2.amount > 0)
+        {
+            slot2.Items.gameObject.SetActive(true);
+            slot2.Items.amountText.gameObject.SetActive(true);
+        }
+        else
+        {
+            slot2.Items.gameObject.SetActive(false);
+            slot2.Items.amountText.gameObject.SetActive(false);
+        }
     }   
     public void Clear()
     {
@@ -119,6 +143,8 @@ public class Slot : MonoBehaviour
     public enum ContainerType // От этого зависит объект, от к которому привязан предмет в этом слоте
     {
         Hotbar,
-        Inventory
+        Inventory,
+        Container,
+        ArmorStand
     }
 }

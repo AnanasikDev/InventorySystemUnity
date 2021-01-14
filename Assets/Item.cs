@@ -64,7 +64,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void AttachNew()
     {   
         attachedToCursor = false;
-        Slot[] possible = inventroy.slots.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).Where(x => x.gameObject.activeSelf).ToArray();
+        foreach (Slot s in inventroy.slots) print("active is " + s.gameObject.activeInHierarchy);
+        Slot[] possible = inventroy.slots.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).Where(x => x.gameObject.activeInHierarchy).ToArray();
         Slot nearest = possible.FirstOrDefault();
         print(string.Join<Slot>(",", possible));
         Slot self = GetSlot();

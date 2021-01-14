@@ -770,6 +770,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1998840597}
     m_Modifications:
+    - target: {fileID: 732887036, guid: e26c4475214373048a3711c2b0139164, type: 3}
+      propertyPath: playerViz
+      value: 
+      objectReference: {fileID: 753461859}
     - target: {fileID: 4726154448231092755, guid: e26c4475214373048a3711c2b0139164,
         type: 3}
       propertyPath: ItemBase

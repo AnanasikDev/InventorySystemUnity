@@ -20,6 +20,7 @@ public class containerManager : MonoBehaviour
     int capacity = 16;
     public Transform AllSlots;
     public Slot[] slots;
+    public GameObject playerViz; // Player vizualization in inventory
     private void Start()
     {
         containerPanel = transform.GetChild(0).gameObject;
@@ -33,6 +34,7 @@ public class containerManager : MonoBehaviour
     }
     public void Open()
     {
+        playerViz.SetActive(false);
         containerPanel.SetActive(true);
         foreach (GameObject obj in ExtraParts)
         {
@@ -46,6 +48,7 @@ public class containerManager : MonoBehaviour
     }
     public void Close()
     {
+        playerViz.SetActive(true); // Снова включаем визуализацию в любом случае при закрытие сундука
         containerPanel.SetActive(false);
         foreach (GameObject obj in ExtraParts)
         {

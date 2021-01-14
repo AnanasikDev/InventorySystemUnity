@@ -116,6 +116,14 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
 
             transform.position = nearest.transform.position;
+            if (self.Type == Slot.ContainerType.Container)
+            {
+                if (managerScript.CurrentContainer != null)
+                {
+                    print("Container remove");
+                    managerScript.CurrentContainer.Remove(self.localID);
+                }
+            }
             if (nearest.Type == Slot.ContainerType.Container)
             {
                 if (managerScript.CurrentContainer != null)

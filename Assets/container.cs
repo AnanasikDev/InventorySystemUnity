@@ -71,6 +71,7 @@ public class container : MonoBehaviour
     }
     public void Remove(int index)
     {
+        print("Removing");
         items[index] = null;
         amounts[index] = 0;
     }

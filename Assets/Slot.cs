@@ -5,13 +5,16 @@ using System.Linq;
 
 public class Slot : MonoBehaviour
 {
+    [HideInInspector]
     public bool Empty = true;
     public Item Items;
+    [HideInInspector]
     public int amount;
     public Transform stuff; // Inventory array of items
     public Transform elems; // Hotbar array of items
     public Transform container; // Container array of items
     public Transform armor; // Armor stand - array of armor
+    [HideInInspector]
     public int index;
     public Transform inv;
     Inventroy inventroy;
@@ -19,6 +22,10 @@ public class Slot : MonoBehaviour
     //public int[] IDs; // Элементы, согласно SlotLimitMode, которые могут или не могут находиться в этом слоте
     public Item.ItemType[] TYPEs; // Типы элементов, которые, согласно SlotLimitMode, могут или не могут находиться в этом слоте
     public ContainerType Type;
+    [HideInInspector]
+    public int ID; // Global id of this slot
+    [HideInInspector]
+    public int localID; // Local id in the group of slots (inventory, hotbar, container etc.)
     private void Start()
     {
         inventroy = inv.GetComponent<Inventroy>();

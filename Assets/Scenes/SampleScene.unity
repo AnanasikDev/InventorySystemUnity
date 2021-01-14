@@ -440,6 +440,7 @@ MonoBehaviour:
   items:
   - {fileID: 1728722936}
   - {fileID: 0}
+  - {fileID: 1379019215}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -453,13 +454,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  amounts: 02000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  amounts: 02000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   opened: 0
   manager: {fileID: 732887034}
   capacity: 16
   AllItemsObject: {fileID: 1842590707}
   Containerstuff: {fileID: 1197039313}
+  ItemBase: {fileID: 1842590706}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +550,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4726154449084766035}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1379019215 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1379019215, guid: ccedd80addcd59048a64652b4ae309c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 7439282324212244198}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83bd9a0cb19ec4443b722ff1a0b7ce4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1387610738
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,6 +783,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1998840597}
     m_Modifications:
+    - target: {fileID: 732887034, guid: e26c4475214373048a3711c2b0139164, type: 3}
+      propertyPath: m_Name
+      value: Container Manager
+      objectReference: {fileID: 0}
     - target: {fileID: 732887036, guid: e26c4475214373048a3711c2b0139164, type: 3}
       propertyPath: playerViz
       value: 
@@ -923,6 +940,10 @@ PrefabInstance:
       propertyPath: armor
       value: 
       objectReference: {fileID: 1883356215}
+    - target: {fileID: 1379019215, guid: ccedd80addcd59048a64652b4ae309c1, type: 3}
+      propertyPath: ManagerContainer
+      value: 
+      objectReference: {fileID: 732887034}
     - target: {fileID: 1689456304, guid: ccedd80addcd59048a64652b4ae309c1, type: 3}
       propertyPath: inv
       value: 
@@ -943,6 +964,10 @@ PrefabInstance:
       propertyPath: armor
       value: 
       objectReference: {fileID: 1883356215}
+    - target: {fileID: 1689456304, guid: ccedd80addcd59048a64652b4ae309c1, type: 3}
+      propertyPath: ManagerContainer
+      value: 
+      objectReference: {fileID: 732887034}
     - target: {fileID: 7439282323377154718, guid: ccedd80addcd59048a64652b4ae309c1,
         type: 3}
       propertyPath: inv
@@ -968,6 +993,11 @@ PrefabInstance:
       propertyPath: armor
       value: 
       objectReference: {fileID: 1883356215}
+    - target: {fileID: 7439282323377154718, guid: ccedd80addcd59048a64652b4ae309c1,
+        type: 3}
+      propertyPath: ManagerContainer
+      value: 
+      objectReference: {fileID: 732887034}
     - target: {fileID: 7439282323487517972, guid: ccedd80addcd59048a64652b4ae309c1,
         type: 3}
       propertyPath: m_Name

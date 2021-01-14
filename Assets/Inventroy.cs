@@ -25,21 +25,29 @@ public class Inventroy : MonoBehaviour
         for (int i = 0; i < AllSlots.childCount - 1; i++)
         {
             slots[add] = AllSlots.GetChild(i).GetComponent<Slot>();
+            slots[add].ID = add;
+            slots[add].localID = i;
             add++;
         }
         for (int i = 0; i < HotbarSlots.childCount-1; i++)
         {
             slots[add] = HotbarSlots.GetChild(i).GetComponent<Slot>();
+            slots[add].ID = add;
+            slots[add].localID = i;
             add++;
         }
         for (int i = 0; i < ArmorSlots.Length - 1; i++)
         {
             slots[add] = ArmorSlots[i];
+            slots[add].ID = add;
+            slots[add].localID = i;
             add++;
         }
         for (int i = 0; i < ContainerSlots.childCount - 1; i++)
         {
             slots[add] = ContainerSlots.GetChild(i).GetComponent<Slot>();
+            slots[add].ID = add;
+            slots[add].localID = i;
             add++;
         }
         int id = 0;

@@ -13,6 +13,8 @@ public class container : MonoBehaviour
     public Transform AllItemsObject;
     Item[] AllItems;
     public Transform Containerstuff;
+    public GameObject ItemBase;
+    ItemBase itemBaseScript;
     private void Start()
     {
         //items = new Item[capacity];
@@ -22,6 +24,7 @@ public class container : MonoBehaviour
         apple.transform.SetParent(Containerstuff);
         items[0] = apple;
         amounts[0] = 1;*/
+        itemBaseScript = ItemBase.GetComponent<ItemBase>();
     }
     private void Update()
     {
@@ -34,16 +37,41 @@ public class container : MonoBehaviour
     }
     public void Open()
     {
+        managerSc.CurrentContainer = this;
         opened = true;
-        managerSc.Items = items;
+        Item[] deepCopy = items;
+        /*for (int i = 0; i < deepCopy.Length; i++)
+        {
+            if (items[i] != null) deepCopy[i] = Instantiate(items[i], managerSc.slots[i].transform.position, Quaternion.identity, Containerstuff);
+        }*/
+        print(string.Join<Item>(", ", deepCopy));
+        managerSc.Items = deepCopy;
         managerSc.amounts = amounts;
         managerSc.Fill();
         managerSc.Open();
     }
     public void Close()
     {
+        managerSc.CurrentContainer = null;
         opened = false;
-        managerSc.Clear();
+        //managerSc.Clear();
         managerSc.Close();
+    }
+    public bool Add(Item item, int amount, int index) // Что, сколько и куда
+    {
+        if (amounts[index] != 0) return false;
+
+        print("Adding");
+        print(itemBaseScript.items);
+        items[index] = itemBaseScript.items[item.ID]; //Instantiate(item, item.transform.position, Quaternion.identity, item.transform.parent);
+        //managerSc.slots[index].Items = items[index];
+        //Destroy(item.gameObject);
+        amounts[index] = amount;
+        return true;
+    }
+    public void Remove(int index)
+    {
+        items[index] = null;
+        amounts[index] = 0;
     }
 }

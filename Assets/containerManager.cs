@@ -21,6 +21,7 @@ public class containerManager : MonoBehaviour
     public Transform AllSlots;
     public Slot[] slots;
     public GameObject playerViz; // Player vizualization in inventory
+    public container CurrentContainer; // The last one opened container. It becomes null exactly whenever it becomes closed
     private void Start()
     {
         containerPanel = transform.GetChild(0).gameObject;
@@ -35,7 +36,14 @@ public class containerManager : MonoBehaviour
     public void Open()
     {
         playerViz.SetActive(false);
+        /*for (int i = 0; i < capacity; i++)
+        {
+            Item ii = Items[i];
+            Items[i] = null;
+            Items[i] = Instantiate(ii, ii.transform.position, Quaternion.identity, containerStuff);
+        }*/
         containerPanel.SetActive(true);
+
         foreach (GameObject obj in ExtraParts)
         {
             obj.SetActive(true);
@@ -59,15 +67,21 @@ public class containerManager : MonoBehaviour
             obj.SetActive(true);
         }
         ArmorStand.SetActive(true);
+        Clear();
     }
     public void Clear()
     {
         //containerStuffItems = new Transform[];
-        Items = new Item[capacity];
+       /* Items = new Item[capacity];
         amounts = new int[capacity];
 
-        foreach (Slot s in slots) if (!s.Empty) Destroy(s.Items.gameObject);
-        foreach (Slot s in slots) s.Clear();
+        foreach (Slot s in slots) if (!s.Empty) { Destroy(s.Items.gameObject); print("Object cleared"); }
+        foreach (Slot s in slots) s.Clear();*/
+        foreach (Slot i in slots)
+        {
+            if (!i.Empty) { Destroy(i.Items.gameObject); i.Clear(); }
+        }
+        amounts = new int[capacity];
     }
     public void Fill()
     {
@@ -75,6 +89,7 @@ public class containerManager : MonoBehaviour
         for (i = 0; i < capacity; i++)
         {
             if (amounts[i] <= 0) continue;
+            print(i);
             slots[i].Add(Items[i], amounts[i]);
             if (!slots[i].Empty) slots[i].Items.transform.SetParent(containerStuff);
             /*slots[i].Items = Items[i];

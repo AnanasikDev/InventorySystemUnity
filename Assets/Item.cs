@@ -5,18 +5,23 @@ using System.Linq;
 public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public GameObject self; // Loot object / Object to use (weapon model etc.)
-    public Text amountText;
-    public int maxAmount = 4;
+    [HideInInspector]
+    public Text amountText;   // Text, that shows the current amount of items
+    public int maxAmount = 4; // Max amount of this item in one slot
+    [HideInInspector]
     public bool attachedToCursor = false;
-    //[HideInInspector]
-    public int attachedIndex;
+    [HideInInspector]
+    public int attachedIndex; // Slot's index, this item is attached to
     public GameObject inv;
     Inventroy inventroy;
+    public GameObject ManagerContainer; // containerManager object
+    containerManager managerScript; // Script provides management of all containers
     public Transform stuff; // Inventory array of items
     public Transform elems; // Hotbar array of items
     public Transform container; // Container array of items
     public Transform armor; // Armor stand - array of armor
-    public int ID = -1;
+    [HideInInspector]
+    public int ID = -1; // Id of item
     public ItemType Type;
     Camera cam;
     public void OnPointerUp(PointerEventData eventData)
@@ -39,8 +44,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     void Start()
     {
+        amountText = transform.GetChild(0).GetComponent<Text>();
         inventroy = inv.GetComponent<Inventroy>();
         cam = Camera.main;
+        managerScript = ManagerContainer.GetComponent<containerManager>();
     }
     private void Update()
     {
@@ -85,6 +92,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 if (nearest.TYPEs.Contains(Type)) { ReturnBack(); return; } //nearest.Items.ID
             }
 
+
             if (!nearest.Empty)
             {
                 if (nearest.Items.ID == ID && nearest.amount + self.amount <= maxAmount)
@@ -107,11 +115,21 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 if (nearest.Type == Slot.ContainerType.ArmorStand) transform.SetParent(armor);
             }
 
+            transform.position = nearest.transform.position;
+            if (nearest.Type == Slot.ContainerType.Container)
+            {
+                if (managerScript.CurrentContainer != null)
+                {
+                    print("Container add");
+                    managerScript.CurrentContainer.Add(this, self.amount, nearest.localID);
+                }
+            }
+
             nearest.amount = self.amount;
             nearest.Empty = false;
             nearest.Items = this;
             
-            transform.position = nearest.transform.position;
+            
             attachedIndex = nearest.index;
 
             self.Clear();

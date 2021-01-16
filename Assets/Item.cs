@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
-public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject self; // Loot object / Object to use (weapon model etc.)
     [HideInInspector]
@@ -24,9 +24,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public int ID = -1; // Id of item
     public ItemType Type;
     Camera cam;
+    public GameObject Description;
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button == 0)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             attachedToCursor = false;
             if (inventroy.opened)
@@ -36,11 +37,37 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == 0)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (!inventroy.opened) return;
             attachedToCursor = true;
         }
+        /*if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Slot self = GetSlot();
+            if (self.amount > 1)
+            {
+                if (!inventroy.opened) return;
+                attachedToCursor = true;
+            }
+            else
+            {
+                Item i = Instantiate(this, transform.position, Quaternion.identity, transform.parent);
+                self.DestroyLast();
+                i.AttachNew();
+                i.attachedToCursor = true;
+            }
+        }*/
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Description.SetActive(true);
+        print("Mouse is on the obj");
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Description.SetActive(false);
+        print("Mouse is out the obj");
     }
     void Start()
     {
@@ -56,7 +83,6 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             transform.position = Input.mousePosition;
             transform.SetAsLastSibling();
         }
-        print($"{attachedToCursor} {inventroy.opened}");
         if (attachedToCursor && !inventroy.opened)
         {
             ReturnBack();
